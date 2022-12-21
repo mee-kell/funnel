@@ -11,3 +11,22 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.main {
+  margin: 4rem 12rem;
+}
+
+/* AUTHENTICATION */
+.authCard {
+  margin: 8rem 24rem; 
+  border: 0px;
+}
+
+.authCard h1, .main h1 {
+  font-weight: bold;
+  padding-bottom: 1rem;
+}
+
+.authCard .authRow {
+  margin: 1rem 0px;
+}

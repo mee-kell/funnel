@@ -1,39 +1,19 @@
 import React from 'react';
-import { signOut } from "firebase/auth";
 import { auth } from '../firebase';
-import { useNavigate } from 'react-router-dom';
-
-import Button from 'react-bootstrap/Button';
+import Upload from './Upload';
 
 const Home = () => {
-    const navigate = useNavigate();
-
-    const handleLogout = () => {
-        signOut(auth).then(() => {
-            // Sign-out successful.
-            navigate("/");
-            console.log("Signed out successfully")
-        }).catch((error) => {
-            // An error happened.
-        });
-    }
-
     const user = auth.currentUser;
 
     if (user) {
-        return (<div>
-            <Button onClick={handleLogout}>
-                Logout
-            </Button>
-        </div>)
+        return <Upload />
     }
 
     return (
-        <>
-            <p>
-                Please log in or sign up.
-            </p>
-        </>
+        <div className="main">
+            <h1>Revise by summarising notes.</h1>
+            <p>Please sign up or log in.</p>
+        </div>
     )
 }
 

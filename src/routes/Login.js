@@ -30,11 +30,11 @@ const Login = () => {
     }
 
     return (
-        <Card style={{ margin: '8rem 16rem', border: '0px' }} body>
+        <Card className="authCard" body>
             <h1> Log in </h1>
 
             <Form>
-                <Form.Group className="mb-3" controlId="formEmail">
+                <Form.Group className="mb-3 authRow" controlId="formEmail">
                     <Form.Label>Email address</Form.Label>
                     <Form.Control
                         id="email-address"
@@ -44,12 +44,9 @@ const Login = () => {
                         placeholder="Email address"
                         onChange={(e) => setEmail(e.target.value)}
                     />
-                    <Form.Text className="text-muted">
-                        We'll never share your email with anyone else.
-                    </Form.Text>
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formPassword">
+                <Form.Group className="mb-3 authRow" controlId="formPassword">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
                         id="password"
@@ -60,17 +57,18 @@ const Login = () => {
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </Form.Group>
-                <Button variant="primary" type="submit" onClick={onLogin}>
-                    Login
-                </Button>
-            </Form>
+                        <Button className="authRow" variant="primary" type="submit" onClick={onLogin}>
+                            Login
+                        </Button>
+                        <br/>
 
-            <div className="text-sm text-white text-center">
-                No account yet? {' '}
-                <NavLink to="/signup">
-                    Sign up
-                </NavLink>
-            </div>
+                <Form.Text className="authRow" muted>
+                    No account yet? {' '}
+                    <NavLink to="/signup">
+                        Sign up
+                    </NavLink>
+                </Form.Text>
+            </Form>
 
         </Card>
     )

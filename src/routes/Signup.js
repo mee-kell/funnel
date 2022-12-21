@@ -3,6 +3,10 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Card from 'react-bootstrap/Card';
+
 const Signup = () => {
     const navigate = useNavigate();
 
@@ -31,59 +35,47 @@ const Signup = () => {
     }
 
     return (
-        <main >
-            <section>
-                <div>
-                    <div>
-                        <h1> Sign up </h1>
-                        <form>
-                            <div>
-                                <label htmlFor="email-address">
-                                    Email address
-                                </label>
-                                <input
-                                    type="email"
-                                    label="Email address"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    required
-                                    placeholder="Email address"
-                                />
-                            </div>
+        <Card className="authCard" body>
+            <h1> Sign up </h1>
 
-                            <div>
-                                <label htmlFor="password">
-                                    Password
-                                </label>
-                                <input
-                                    type="password"
-                                    label="Create password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    required
-                                    placeholder="Password"
-                                />
-                            </div>
+            <Form>
+                <Form.Group className="mb-3 authRow" controlId="formEmail">
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control
+                        type="email"
+                        label="Email address"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        placeholder="Email address"
+                    />
+                </Form.Group>
 
-                            <button
-                                type="submit"
-                                onClick={onSubmit}
-                            >
-                                Sign up
-                            </button>
+                <Form.Group className="mb-3 authRow" controlId="formPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                        type="password"
+                        label="Create password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        placeholder="Password"
+                    />
+                </Form.Group>
+                <Button className="authRow" variant="primary" type="submit" onClick={onSubmit}>
+                    Sign up
+                </Button>
+                <br />
 
-                        </form>
+                <Form.Text className="authRow" muted>
+                    Already have an account?{' '}
+                    <NavLink to="/login" >
+                        Log in
+                    </NavLink>
+                </Form.Text>
+            </Form>
 
-                        <p>
-                            Already have an account?{' '}
-                            <NavLink to="/login" >
-                                Sign in
-                            </NavLink>
-                        </p>
-                    </div>
-                </div>
-            </section>
-        </main>
+        </Card>
     )
 }
 
