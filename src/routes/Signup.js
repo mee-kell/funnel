@@ -9,7 +9,6 @@ import Card from 'react-bootstrap/Card';
 
 const Signup = () => {
     const navigate = useNavigate();
-
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('');
 

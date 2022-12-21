@@ -12,8 +12,12 @@ import Navbar from 'react-bootstrap/Navbar';
 import Upload from './routes/Upload.js';
 
 const App = () => {
-
-  const user = auth.currentUser;
+  // let user = null;
+  // onAuthStateChanged(auth, (currUser) => {
+  //   if (currUser) {
+  //     user = currUser;
+  //   }
+  // });
 
   const navigate = useNavigate();
 
@@ -28,7 +32,7 @@ const App = () => {
   }
 
   let navBar;
-  if (user) {
+  if (auth.currentUser) {
     navBar = (
       <Navbar bg="light" variant="light">
         <Container>

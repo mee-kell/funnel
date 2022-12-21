@@ -1,11 +1,17 @@
-import React from 'react';
 import { auth } from '../firebase';
+import React from 'react';
 import Upload from './Upload';
+// import { onAuthStateChanged } from 'firebase/auth';
 
 const Home = () => {
-    const user = auth.currentUser;
+    // let user = null;
+    // onAuthStateChanged(auth, (currUser) => {
+    //     if (currUser) {
+    //         user = currUser;
+    //     }
+    // });
 
-    if (user) {
+    if (!auth.currentUser) {
         return <Upload />
     }
 

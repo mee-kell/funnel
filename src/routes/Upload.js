@@ -1,27 +1,42 @@
 import React, { useState } from 'react';
-import { storage } from '../firebase';
-import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { auth } from '../firebase';
+import { ref as storeRef, getDownloadURL, uploadBytesResumable, getStorage } from "firebase/storage";
+import { ref, set, onValue, getDatabase } from "firebase/database";
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Login from './Login';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const Upload = () => {
 
+    /* Ensure that user is logged in. */
+    let userId;
+    onAuthStateChanged(auth, (user) => {
+        if (!user) {
+            return <Login />;
+        }
+        userId = user.uid;
+    });
+
     // TODO: Add authentication check.
+    
+    const database = getDatabase();
+    const storage = getStorage();
 
     const [imgUrl, setImgUrl] = useState(null);
     const [progresspercent, setProgresspercent] = useState(0);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const file = e.target[0].files[0];
+        const file = e.target.files[0];
         if (!file) return;
-        const storageRef = ref(storage, `files/${file.name}`);
-        const uploadTask = uploadBytesResumable(storageRef, file);
+        const storageRef = storeRef(storage, `files/${file.name}`);
+        const uploadImage = uploadBytesResumable(storageRef, file);
 
-        uploadTask.on("state_changed",
+        uploadImage.on("state_changed",
             (snapshot) => {
                 const progress =
                     Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
@@ -31,20 +46,48 @@ const Upload = () => {
                 alert(error);
             },
             () => {
-                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                getDownloadURL(uploadImage.snapshot.ref).then((downloadURL) => {
                     setImgUrl(downloadURL)
                 });
             }
         );
     }
 
+    const [groupId, setGroupId] = useState('');
+    const [images] = useState([]);
+
+    const saveImage = (imageUrl) => {
+        set(ref(database, 'group/' + userId + groupId + '/image/' + imageUrl), {
+            summary: ""
+        });
+    }
+
+    const groupUploadsRef = ref(database, 'group/' + userId + groupId + "/image");
+    onValue(groupUploadsRef, (snapshot) => {
+        snapshot.forEach((imgNode) => {
+            images.push(imgNode.key);
+        });                                            
+    });
+
     return (
         <div className='main'>
             <h1> Upload </h1>
 
-            <Form onSubmit={handleSubmit}>
+            <Form>
                 <Row>
                     <Form.Label>Please upload an image of a section of notes.</Form.Label>
+                    <Col>
+                        <Form.Group className="mb-3 authRow" controlId="formGroup">
+                            <Form.Control
+                                id="group-tag"
+                                name="group"
+                                type="text"
+                                required
+                                placeholder="Topic label"
+                                onChange={(e) => setGroupId(e.target.value)}
+                            />
+                        </Form.Group>
+                    </Col>
                     <Col>
                         <Form.Group className="mb-3 authRow" controlId="formUpload">
                             <Form.Control
@@ -52,11 +95,12 @@ const Upload = () => {
                                 name="image"
                                 type="file"
                                 required
+                                onSubmit={handleSubmit}
                             />
                         </Form.Group>
                     </Col>
                     <Col>
-                        <Button variant="primary" type="submit">
+                        <Button variant="primary" type="submit" onClick={saveImage}>
                             Upload
                         </Button>
                     </Col>
@@ -66,7 +110,8 @@ const Upload = () => {
             {
                 !imgUrl &&
                 <div className='outerbar'>
-                    <div className='innerbar' style={{ width: `${progresspercent}%` }}>
+                    <div className='innerbar'
+                        style={{ width: `${progresspercent}%` }}>
                         {progresspercent}%
                     </div>
                 </div>
@@ -75,6 +120,11 @@ const Upload = () => {
                 imgUrl &&
                 <img src={imgUrl} alt='uploaded file' height={200} />
             }
+            <ul>
+                {images.map(url => (
+                <img src={url} alt='uploaded file' height={200} />
+                ))}
+            </ul>
         </div>
     )
 }
