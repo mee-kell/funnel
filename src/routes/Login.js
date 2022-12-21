@@ -3,6 +3,10 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 import { NavLink, useNavigate } from 'react-router-dom'
 
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Card from 'react-bootstrap/Card';
+
 const Login = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
@@ -26,61 +30,49 @@ const Login = () => {
     }
 
     return (
-        <>
-            <main >
-                <section>
-                    <div>
-                        <p> FocusApp </p>
+        <Card style={{ margin: '8rem 16rem', border: '0px' }} body>
+            <h1> Log in </h1>
 
-                        <form>
-                            <div>
-                                <label htmlFor="email-address">
-                                    Email address
-                                </label>
-                                <input
-                                    id="email-address"
-                                    name="email"
-                                    type="email"
-                                    required
-                                    placeholder="Email address"
-                                    onChange={(e) => setEmail(e.target.value)}
-                                />
-                            </div>
+            <Form>
+                <Form.Group className="mb-3" controlId="formEmail">
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control
+                        id="email-address"
+                        name="email"
+                        type="email"
+                        required
+                        placeholder="Email address"
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <Form.Text className="text-muted">
+                        We'll never share your email with anyone else.
+                    </Form.Text>
+                </Form.Group>
 
-                            <div>
-                                <label htmlFor="password">
-                                    Password
-                                </label>
-                                <input
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    required
-                                    placeholder="Password"
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
-                            </div>
+                <Form.Group className="mb-3" controlId="formPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                        id="password"
+                        name="password"
+                        type="password"
+                        required
+                        placeholder="Password"
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </Form.Group>
+                <Button variant="primary" type="submit" onClick={onLogin}>
+                    Login
+                </Button>
+            </Form>
 
-                            <div>
-                                <button
-                                    onClick={onLogin}
-                                >
-                                    Login
-                                </button>
-                            </div>
-                        </form>
+            <div className="text-sm text-white text-center">
+                No account yet? {' '}
+                <NavLink to="/signup">
+                    Sign up
+                </NavLink>
+            </div>
 
-                        <p className="text-sm text-white text-center">
-                            No account yet? {' '}
-                            <NavLink to="/signup">
-                                Sign up
-                            </NavLink>
-                        </p>
-
-                    </div>
-                </section>
-            </main>
-        </>
+        </Card>
     )
 }
 

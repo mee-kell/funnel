@@ -3,6 +3,8 @@ import { signOut } from "firebase/auth";
 import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 
+import Button from 'react-bootstrap/Button';
+
 const Home = () => {
     const navigate = useNavigate();
 
@@ -20,9 +22,9 @@ const Home = () => {
 
     if (user) {
         return (<div>
-            <button onClick={handleLogout}>
+            <Button onClick={handleLogout}>
                 Logout
-            </button>
+            </Button>
         </div>)
     }
 
