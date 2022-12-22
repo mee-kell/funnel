@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { auth } from '../firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 import { ref as storeRef, getDownloadURL, uploadBytesResumable, getStorage } from "firebase/storage";
 import { ref, set, onValue, getDatabase } from "firebase/database";
 
@@ -7,18 +8,21 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Login from './Login';
-import { onAuthStateChanged } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 const Upload = () => {
 
     /* Ensure that user is logged in. */
-    let userId;
-    onAuthStateChanged(auth, (user) => {
-        if (!user) {
-            return <Login />;
+    const [userId, setUserId] = useState('');
+
+    const navigate = useNavigate();
+
+    onAuthStateChanged(auth, user => {
+        if (user) {
+            setUserId(user.uid);
+        } else {
+            navigate("/login");
         }
-        userId = user.uid;
     });
 
     // TODO: Add authentication check.
