@@ -26,6 +26,9 @@ const LoggedInNav = () => {
                     <Nav.Link href="/upload">
                         Upload
                     </Nav.Link>
+                    <Nav.Link href="/display">
+                        Display
+                    </Nav.Link>
                     <Nav.Link href="/" onClick={ handleLogout }>
                         Logout
                     </Nav.Link>

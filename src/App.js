@@ -9,6 +9,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import Upload from './routes/Upload.js';
 import LoggedInNav from './components/LoggedInNav.js';
 import LoggedOutNav from './components/LoggedOutNav.js';
+import Display from './routes/Display.js';
 
 class App extends React.Component {
 
@@ -51,6 +52,7 @@ class App extends React.Component {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/upload" element={<Upload />} />
+        <Route path="/display" element={<Display />} />
       </Routes>
     )
 
