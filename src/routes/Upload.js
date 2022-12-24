@@ -49,14 +49,13 @@ function Upload() {
             return;
         };
 
-        const imageName = image.name.substr(0, image.name.lastIndexOf('.')) || image.name;
-        const dbPath = `${userId}/${groupId}/${imageName}`;
-
         // Upload image to storage
-        const storageRef = storeRef(storage, dbPath);
+        const storageRef = storeRef(storage, `${userId}/${groupId}/${image.name}`);
         uploadBytesResumable(storageRef, image);
 
         // Add reference to image to database
+        const imageName = image.name.substr(0, image.name.lastIndexOf('.')) || image.name;
+        const dbPath = `${userId}/${groupId}/${imageName}`;
         set(ref(database, dbPath), {
             imgPath: image.name,
             summary: ""
