@@ -38,7 +38,6 @@ function Upload() {
 
     function handleChange(event) {
         setImage(event.target.files[0]);
-        console.log("set file");
     }
 
     const handleSubmit = (e) => {
@@ -54,7 +53,7 @@ function Upload() {
         uploadBytesResumable(storageRef, image);
 
         // Add reference to image to database
-        const imageName = image.name.substr(0, image.name.lastIndexOf('.')) || image.name;
+        const imageName = image.name.replace(/\./g, '');
         const dbPath = `${userId}/${groupId}/${imageName}`;
         set(ref(database, dbPath), {
             imgPath: image.name,

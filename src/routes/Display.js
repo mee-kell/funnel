@@ -14,10 +14,15 @@ function Display() {
 
     let userId = "";
     const [images, setImages] = useState([]);
+    const [groups, setGroups] = useState([]);
+
+    useEffect(() => {
+        updateView();
+    }, []);
 
     const navigate = useNavigate();
 
-    useEffect(() => {
+    function updateView() {
         onAuthStateChanged(auth, async user => {
             if (user) {
                 userId = user.uid;
@@ -26,16 +31,21 @@ function Display() {
             } else {
                 navigate("/login");
             }
-        })
-    }, []);
+        });
+    }
 
     async function getImagePaths() {
         const groupRef = ref(database, userId);
+        let groupsList = new Set();
         onValue(groupRef, async (snapshot) => {
             const userGroups = snapshot.toJSON();
             let imageData = new Set();
-
             for (let group in userGroups) {
+                groupsList.add(group);
+                console.log(groupsList);
+                if (group !== groupId) {
+                    continue;
+                }
                 for (let img in userGroups[group]) {
                     const url = userGroups[group][img].imgPath;
                     const summary = userGroups[group][img].summary;
@@ -50,6 +60,7 @@ function Display() {
                     });
                 }
             }
+            setGroups(Array.from(groupsList.values()));
             setImages(Array.from(imageData.values()));
         });
     }
@@ -64,20 +75,30 @@ function Display() {
         setEditSummaryText(e.target.value);
     }
 
-    const handleClose = (e) => {
-        e.preventDefault();
-
+    const handleClose = () => {
         // Update new summary to database.
-        set(ref(database, editSummaryPath), editSummaryText);
+        const newText = editSummaryText === "" ? textToEdit : editSummaryText;
+        set(ref(database, editSummaryPath), newText);
 
         setShow(false);
         setEditSummaryPath('');
+        setTextToEdit('');
     }
 
     const handleShow = (image) => {
         setShow(true);
         setEditSummaryPath(image["path"]);
         setTextToEdit(image["text"]);
+    }
+
+    const [groupId, setGroupId] = useState('');
+
+    const updateGroup = (e) => {
+        setGroupId(e.target.value);
+    }
+
+    const viewGroup = () => {
+        updateView();
     }
 
     if (loading) {
@@ -87,6 +108,24 @@ function Display() {
     return (
         <div className='main'>
             <h1> Notes </h1>
+            <Form>
+                <Row>
+                    <Col>
+                        <Form.Select aria-label="group-tag" onChange={updateGroup}>
+                            <option>Select group</option>
+                            {groups.map((name) => (
+                                <option value={name}>{name}</option>
+                            ))}
+                        </Form.Select>
+                    </Col>
+                    <Col>
+                        <Button variant="primary" onClick={viewGroup}>
+                            View
+                        </Button>
+                    </Col>
+                </Row>
+            </Form>
+            <br />
             <Row xs={1} md={3} className="g-4">
                 {images.map((img) => (
                     <Col>
@@ -114,7 +153,7 @@ function Display() {
                         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                             <Form.Label>New summary</Form.Label>
                             <Form.Control as="textarea" rows={3} onChange={changeSummary}>
-                            {textToEdit}
+                                {textToEdit}
                             </Form.Control>
                         </Form.Group>
                         <Button variant="primary" type="submit" onClick={handleClose}>
