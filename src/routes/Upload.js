@@ -58,7 +58,7 @@ function Upload() {
         const dbPath = `${userId}/${groupId}/${imageName}`;
         set(ref(database, dbPath), {
             imgPath: image.name,
-            summary: ""
+            summary: "No summary."
         });
     }
 
