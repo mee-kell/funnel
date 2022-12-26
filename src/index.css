@@ -30,3 +30,14 @@ code {
 .authCard .authRow {
   margin: 1rem 0px;
 }
+
+/* MAIN PAGE */
+.end-align {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+}
+
+.upload-modal .modal-dialog{
+  max-width: 80%;
+}

@@ -1,15 +1,14 @@
 import React from 'react';
-import Home from './routes/Home.js';
 import Signup from './routes/Signup';
 import Login from './routes/Login';
 import { Routes, Route } from 'react-router-dom';
 import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
-import Upload from './routes/Upload.js';
 import LoggedInNav from './components/LoggedInNav.js';
 import LoggedOutNav from './components/LoggedOutNav.js';
 import Display from './routes/Display.js';
+import Container from 'react-bootstrap/Container';
 
 class App extends React.Component {
 
@@ -48,11 +47,9 @@ class App extends React.Component {
 
     const routes = (
       <Routes className="appBody">
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Display />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/upload" element={<Upload />} />
-        <Route path="/display" element={<Display />} />
       </Routes>
     )
 
@@ -60,18 +57,18 @@ class App extends React.Component {
 
     if (!user) {
       return (
-            <div>
-              <LoggedOutNav />
-              {routes}
-            </div>
+        <Container fluid>
+          <LoggedOutNav />
+          {routes}
+        </Container>
       );
     }
 
     return (
-      <div>
+      <Container fluid>
         <LoggedInNav />
         {routes}
-      </div>
+      </Container>
     );
   }
 }

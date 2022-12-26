@@ -67,7 +67,7 @@ const ImagesView = ({ userId, groupId }) => {
     const handleClose = () => {
         // Update new summary to database.
         if (editSummaryText !== "") {
-            set(ref(database, editSummaryPath), textToEdit);
+            set(ref(database, editSummaryPath), editSummaryText);
         }
 
         setShow(false);
@@ -78,7 +78,7 @@ const ImagesView = ({ userId, groupId }) => {
 
     return (
         <>
-            <Row xs={1} md={3} className="g-4">
+            <Row xs={1} md={2} className="g-4">
                 {images.map((img) => (
                     <Col>
                         <Card>

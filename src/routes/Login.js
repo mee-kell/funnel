@@ -18,7 +18,7 @@ const Login = () => {
             .then((userCredential) => {
                 // Signed in
                 const user = userCredential.user;
-                navigate("/upload")
+                navigate("/")
                 console.log(user);
             })
             .catch((error) => {

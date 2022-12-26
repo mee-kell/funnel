@@ -23,12 +23,6 @@ const LoggedInNav = () => {
             <Container>
                 <Navbar.Brand href="/">funnel</Navbar.Brand>
                 <Nav className="justify-content-end">
-                    <Nav.Link href="/upload">
-                        Upload
-                    </Nav.Link>
-                    <Nav.Link href="/display">
-                        Display
-                    </Nav.Link>
                     <Nav.Link href="/" onClick={ handleLogout }>
                         Logout
                     </Nav.Link>
