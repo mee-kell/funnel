@@ -4,12 +4,12 @@ import { onValue, ref } from "firebase/database";
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 const SelectView = ({ userId, groupId, updateGroupId, setImages }) => {
-
+    // Display nothing if user has not been retrieved.
     if (userId === "") {
         return <></>
     }
 
-    /* Fetch a list of all user groups on loading. */
+    // Fetch a list of all user groups upon loading.
     const [groups, setGroups] = useState([]);
     useEffect(() => {
         let groupsList = new Set();
@@ -23,12 +23,14 @@ const SelectView = ({ userId, groupId, updateGroupId, setImages }) => {
         });
     }, []);
 
+    // Save the selected group.
     const updateGroup = (e) => {
         setImages([]);
         updateGroupId(e.target.value);
     }
 
-    function renderOption(name) {
+    // Display option for given group name.
+    const renderOption = (name) => {
         const saved = localStorage.getItem("groupId");
         if (name === saved) {
             return <MenuItem selected value={name}>{name}</MenuItem>

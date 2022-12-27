@@ -1,6 +1,4 @@
 import React from 'react';
-import Signup from './routes/Signup';
-import Login from './routes/Login';
 import { Routes, Route } from 'react-router-dom';
 import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -8,6 +6,9 @@ import { onAuthStateChanged } from 'firebase/auth';
 import LoggedInNav from './components/LoggedInNav.js';
 import LoggedOutNav from './components/LoggedOutNav.js';
 import Display from './routes/Display.js';
+import Signup from './routes/Signup';
+import Login from './routes/Login';
+
 import Container from 'react-bootstrap/Container';
 
 class App extends React.Component {

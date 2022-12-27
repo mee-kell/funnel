@@ -9,21 +9,26 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 const LoggedInNav = () => {
 
-    const navigate = useNavigate();
+    // Clear cache when logging out.
     const handleLogout = () => {
         signOut(auth).then(() => {
             sessionStorage.removeItem('Auth Token');
             localStorage.clear();
+            const navigate = useNavigate();
             navigate("/");
         }).catch((error) => {
-            // An error happened.
             console.log("Could not log out.");
         });
     }
     return (
-        <Box sx={{width: '100%', padding: 2, display: 'flex', justifyContent: 'space-between'}}>
+        <Box sx={{
+            width: '100%',
+            padding: 2,
+            display: 'flex',
+            justifyContent: 'space-between'
+        }}>
             <IconButton aria-label="home" href="/"><HomeIcon /></IconButton>
-            <IconButton aria-label="logout" href="/" onClick={ handleLogout }>
+            <IconButton aria-label="logout" href="/" onClick={handleLogout}>
                 <LogoutIcon />
             </IconButton>
         </Box>

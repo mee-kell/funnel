@@ -13,27 +13,28 @@ import { Col, Row } from 'react-bootstrap';
 function Display() {
 
     const [userId, setUserId] = useState("");
+    const [images, setImages] = useState([]);
+    const [loading, setLoading] = useState(true);
+    // Group ID is cached and should be restored upon reload.
     const [groupId, setGroupId] = useState(() => {
-        // getting stored value
         const saved = localStorage.getItem("groupId");
         return saved || "";
     });
-    const [images, setImages] = useState([]);
-    const [loading, setLoading] = useState(true);
 
-    const navigate = useNavigate();
+    // Authenticate user upon loading.
     useEffect(() => {
         onAuthStateChanged(auth, user => {
             if (user) {
                 setUserId(user.uid);
                 setLoading(false);
             } else {
+                const navigate = useNavigate();
                 navigate("/login");
             }
         });
     }, []);
 
-    /* Save the selected group upon refresh. */
+    // Preserve the selected group ID during refresh.
     useEffect(() => {
         localStorage.setItem("groupId", groupId);
     }, [groupId]);
@@ -56,8 +57,16 @@ function Display() {
 
             {loading === false &&
                 <>
-                    <SelectView userId={userId} groupId={groupId} updateGroupId={updateGroupId} setImages={setImages} />
-                    <ImagesView userId={userId} groupId={groupId} images={images} setImages={setImages}/>
+                    <SelectView 
+                        userId={userId} 
+                        groupId={groupId} 
+                        updateGroupId={updateGroupId} 
+                        setImages={setImages} />
+                    <ImagesView 
+                        userId={userId} 
+                        groupId={groupId} 
+                        images={images} 
+                        setImages={setImages}/>
                 </>
             }
         </div>

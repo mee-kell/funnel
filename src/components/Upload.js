@@ -3,24 +3,20 @@ import { storage, database } from '../firebase';
 import { ref as storeRef, uploadBytesResumable } from "firebase/storage";
 import { ref, set } from "firebase/database";
 
-import Button from '@mui/material/Button';
 import Form from 'react-bootstrap/Form';
 import { Modal } from 'react-bootstrap';
+import Button from '@mui/material/Button';
 import { TextField } from '@mui/material';
 
 const Upload = ({ userId }) => {
 
+    // Display nothing if user has not been retrieved yet.
     if (userId === "") {
         return <></>
     }
 
+    // Control display for upload modal.
     const [show, setShow] = useState(false);
-    const [uploadImage, setUploadImage] = useState("");
-    const [uploadGroupId, setUploadGroupId] = useState('');
-
-    function updateGroup(event) {
-        setUploadGroupId(event.target.value);
-    }
 
     function handleShow() {
         setShow(true);
@@ -28,6 +24,14 @@ const Upload = ({ userId }) => {
 
     function handleClose() {
         setShow(false);
+    }
+
+    // Control upload of new snippet.
+    const [uploadImage, setUploadImage] = useState("");
+    const [uploadGroupId, setUploadGroupId] = useState('');
+
+    function updateGroup(event) {
+        setUploadGroupId(event.target.value);
     }
 
     function handleChange(event) {
@@ -43,7 +47,8 @@ const Upload = ({ userId }) => {
         };
 
         // Upload image to storage
-        const storageRef = storeRef(storage, `${userId}/${uploadGroupId}/${uploadImage.name}`);
+        const newNodePath = `${userId}/${uploadGroupId}/${uploadImage.name}`;
+        const storageRef = storeRef(storage, newNodePath);
         uploadBytesResumable(storageRef, uploadImage);
 
         // Add reference to image to database
@@ -100,7 +105,6 @@ const Upload = ({ userId }) => {
                     {uploadForm}
                 </Modal.Body>
             </Modal>
-
         </>
     )
 }
