@@ -1,20 +1,13 @@
 import React from 'react';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
+import { Box, Button } from '@mui/material';
 
 const LoggedOutNav = () => {
 
     return (
-        <Navbar bg="light" variant="light">
-            <Container>
-                <Navbar.Brand href="/">funnel</Navbar.Brand>
-                <Nav className="justify-content-end">
-                    <Nav.Link href="/signup">Sign up</Nav.Link>
-                    <Nav.Link href="/login">Log in</Nav.Link>
-                </Nav>
-            </Container>
-        </Navbar>
+        <Box sx={{width: '100%', padding: 2, display: 'flex', justifyContent: 'space-between'}}>
+            <Button aria-label="signup" href="/signup">Sign up</Button>
+            <Button aria-label="login" href="/login">Log in</Button>
+        </Box>
     );
 }
 

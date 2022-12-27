@@ -3,9 +3,9 @@ import { auth } from '../firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { NavLink, useNavigate } from 'react-router-dom'
 
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Card from 'react-bootstrap/Card';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import { Box } from '@mui/material';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -30,47 +30,41 @@ const Login = () => {
     }
 
     return (
-        <Card className="authCard" body>
+        <Box className="authCard">
             <h1> Log in </h1>
-
-            <Form>
-                <Form.Group className="mb-3 authRow" controlId="formEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control
-                        id="email-address"
-                        name="email"
-                        type="email"
-                        required
-                        placeholder="Email address"
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </Form.Group>
-
-                <Form.Group className="mb-3 authRow" controlId="formPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        id="password"
-                        name="password"
-                        type="password"
-                        required
-                        placeholder="Password"
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </Form.Group>
-                        <Button className="authRow" variant="primary" type="submit" onClick={onLogin}>
-                            Login
-                        </Button>
-                        <br/>
-
-                <Form.Text className="authRow" muted>
+                <TextField
+                    className="authRow"
+                    required
+                    id="outlined-required"
+                    label="Email"
+                    type="email"
+                    fullWidth
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <TextField
+                    className="authRow"
+                    required
+                    id="outlined-required"
+                    label="Password"
+                    type="password"
+                    fullWidth
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <Button 
+                    className="authRow" 
+                    variant="contained" 
+                    type="submit" 
+                    onClick={onLogin}>
+                    Login
+                </Button>
+                <br />
+                <p className="authRow" muted>
                     No account yet? {' '}
                     <NavLink to="/signup">
                         Sign up
                     </NavLink>
-                </Form.Text>
-            </Form>
-
-        </Card>
+                </p>
+        </Box>
     )
 }
 

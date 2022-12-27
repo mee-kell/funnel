@@ -1,31 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import { database, storage } from '../firebase';
-import { onValue, ref, set } from "firebase/database";
+import { onValue, ref, remove, set } from "firebase/database";
 import { getDownloadURL, ref as storageRef } from 'firebase/storage';
-import { Button, Card, Col, Modal, Row } from 'react-bootstrap';
+import { Card, Col, Modal, Row } from 'react-bootstrap';
+
 import Form from 'react-bootstrap/Form';
+import CompileView from './CompileView';
 
-const ImagesView = ({ userId, groupId }) => {
+import EditIcon from '@mui/icons-material/Edit';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import { CircularProgress, TextField } from '@mui/material';
 
-    if (userId === "") {
-        return <p> Loading... </p>
+const ImagesView = ({ userId, groupId, images, setImages }) => {
+
+    if (userId === "" || images === []) {
+        return <></>
     }
 
-    const [images, setImages] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [show, setShow] = useState(false);
+
     const [editSummaryPath, setEditSummaryPath] = useState('');
     const [imageForNewSummary, setImageForNewSummary] = useState('');
     const [textToEdit, setTextToEdit] = useState('');
     const [editSummaryText, setEditSummaryText] = useState('');
 
     useEffect(() => {
-        
+
         const userDbRef = ref(database, userId);
         /* Get all images for selected user group. */
         onValue(userDbRef, async (snapshot) => {
             let imageData = new Set();
             const userGroups = snapshot.toJSON();
-
+            setLoading(true);
             for (let group in userGroups) {
                 if (group !== groupId) {
                     continue;
@@ -48,6 +56,7 @@ const ImagesView = ({ userId, groupId }) => {
             }
 
             setImages(Array.from(imageData.values()));
+            setLoading(false);
         });
 
     }, [groupId]);
@@ -76,9 +85,29 @@ const ImagesView = ({ userId, groupId }) => {
         setImageForNewSummary('');
     }
 
+    const handleDelete = () => {
+        const imageNodePath = editSummaryPath.replace("/summary", '');
+        remove(ref(database, imageNodePath));
+
+        setShow(false);
+        setEditSummaryPath('');
+        setTextToEdit('');
+        setImageForNewSummary('');
+    }
+
     return (
         <>
+            <Row>
+                <Col><CompileView groupId={groupId} images={images} /></Col>
+                <Col></Col>
+            </Row>
+            <br />
             <Row xs={1} md={2} className="g-4">
+                {loading === true &&
+                    <div className="center">
+                        <CircularProgress />
+                    </div>}
+
                 {images.map((img) => (
                     <Col>
                         <Card>
@@ -87,16 +116,18 @@ const ImagesView = ({ userId, groupId }) => {
                                 <Card.Text>
                                     {img["text"]}
                                 </Card.Text>
-                                <Button variant="primary" onClick={() => handleShow(img)}>
-                                    Edit summary
-                                </Button>
+                                <Col className="end-align">
+                                <IconButton color="primary" aria-label="edit summary" component="label" onClick={() => handleShow(img)}>
+                                    <EditIcon />
+                                </IconButton>
+                                </Col>
                             </Card.Body>
                         </Card>
                     </Col>
                 ))}
             </Row>
 
-            <Modal show={show} onHide={handleClose}>
+            <Modal className="notes-modal" show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit summary</Modal.Title>
                 </Modal.Header>
@@ -104,13 +135,32 @@ const ImagesView = ({ userId, groupId }) => {
                     <Form>
                         <Form.Group className="mb-3">
                             <img width="100%" src={imageForNewSummary} alt="note-snippet" />
-                            <Form.Control as="textarea" rows={3} onChange={changeSummary}>
-                                {textToEdit}
-                            </Form.Control>
                         </Form.Group>
-                        <Button variant="primary" type="submit" onClick={handleClose}>
-                            Save
-                        </Button>
+                        <Form.Group className="mb-3">
+                            <TextField 
+                                id="outlined-multiline-static"
+                                label="Summary"
+                                multiline
+                                fullWidth
+                                rows={3}
+                                maxLength={300}
+                                defaultValue={textToEdit}
+                                onChange={changeSummary}/>
+                        </Form.Group>
+
+                        <Row>
+                            <Col>
+                                <Button variant="outlined" color="error" type="submit" onClick={handleDelete}>
+                                    Delete
+                                </Button>
+                            </Col>
+                            <Col className="end-align">
+                                <Button variant="contained" disableElevation type="submit" onClick={handleClose}>
+                                    Save
+                                </Button>
+                            </Col>
+                        </Row>
+
                     </Form>
                 </Modal.Body>
             </Modal>

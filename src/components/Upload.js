@@ -90,7 +90,7 @@ const Upload = ({ userId }) => {
                 New upload
             </Button>
 
-            <Modal className="upload-modal" show={show} onHide={handleClose}>
+            <Modal className="notes-modal" show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Upload</Modal.Title>
                 </Modal.Header>

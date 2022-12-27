@@ -1,10 +1,11 @@
-import { signOut } from 'firebase/auth';
 import React from 'react';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
+import { signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
+
+import { Box, IconButton } from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const LoggedInNav = () => {
 
@@ -19,16 +20,12 @@ const LoggedInNav = () => {
         });
     }
     return (
-        <Navbar bg="light" variant="light">
-            <Container>
-                <Navbar.Brand href="/">funnel</Navbar.Brand>
-                <Nav className="justify-content-end">
-                    <Nav.Link href="/" onClick={ handleLogout }>
-                        Logout
-                    </Nav.Link>
-                </Nav>
-            </Container>
-        </Navbar>
+        <Box sx={{width: '100%', padding: 2, display: 'flex', justifyContent: 'space-between'}}>
+            <IconButton aria-label="home" href="/"><HomeIcon /></IconButton>
+            <IconButton aria-label="logout" href="/" onClick={ handleLogout }>
+                <LogoutIcon />
+            </IconButton>
+        </Box>
     )
 }
 

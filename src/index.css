@@ -16,6 +16,14 @@ code {
   margin: 4rem 12rem;
 }
 
+.center {
+  display: flex;
+  justify-content: center;
+  height: 10rem;
+  width: 100%;
+  align-items: center;
+}
+
 /* AUTHENTICATION */
 .authCard {
   margin: 8rem 24rem; 
@@ -28,7 +36,7 @@ code {
 }
 
 .authCard .authRow {
-  margin: 1rem 0px;
+  margin: 12px 0px;
 }
 
 /* MAIN PAGE */
@@ -38,6 +46,21 @@ code {
   justify-content: flex-end;
 }
 
-.upload-modal .modal-dialog{
-  max-width: 80%;
+.notes-modal .modal-dialog {
+  max-width: 75%;
+}
+
+.notes-modal .modal-body {
+  padding: 2rem;
+}
+
+/* SMALLER SCREENS */
+@media only screen and (max-width: 1080px) {
+  .main {
+    margin: 2rem 4rem;
+  }
+  .authCard {
+    margin: 4rem 8rem; 
+    border: 0px;
+  }
 }

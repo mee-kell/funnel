@@ -4,10 +4,10 @@ import { onValue, ref } from "firebase/database";
 
 import Form from 'react-bootstrap/Form';
 
-const SelectView = ({ userId, updateGroupId }) => {
+const SelectView = ({ userId, updateGroupId, setImages }) => {
 
     if (userId === "") {
-        return <p> Loading... </p>
+        return <></>
     }
 
     /* Fetch a list of all user groups on loading. */
@@ -25,6 +25,7 @@ const SelectView = ({ userId, updateGroupId }) => {
     }, []);
 
     const updateGroup = (e) => {
+        setImages([]);
         updateGroupId(e.target.value);
     }
 
