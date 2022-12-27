@@ -3,9 +3,10 @@ import { storage, database } from '../firebase';
 import { ref as storeRef, uploadBytesResumable } from "firebase/storage";
 import { ref, set } from "firebase/database";
 
-import Button from 'react-bootstrap/Button';
+import Button from '@mui/material/Button';
 import Form from 'react-bootstrap/Form';
 import { Modal } from 'react-bootstrap';
+import { TextField } from '@mui/material';
 
 const Upload = ({ userId }) => {
 
@@ -58,16 +59,15 @@ const Upload = ({ userId }) => {
 
     const uploadForm = (
         <Form>
-            <Form.Label>Upload a snippet.</Form.Label>
             <Form.Group className="mb-3 authRow">
-                <Form.Control
-                    id="group-tag"
-                    name="group"
+                <TextField 
+                    id="group-id" 
+                    label="Topic label" 
+                    variant="outlined" 
                     type="text"
                     required
-                    placeholder="Topic label"
-                    onChange={(e) => updateGroup(e)}
-                />
+                    fullWidth
+                    onChange={(e) => updateGroup(e)} />
             </Form.Group>
             <Form.Group className="mb-3 authRow">
                 <Form.Control
@@ -78,15 +78,17 @@ const Upload = ({ userId }) => {
                     onChange={handleChange}
                 />
             </Form.Group>
-            <Button variant="primary" type="submit" onClick={handleSubmit}>
+            <div className="end-align">
+            <Button variant="contained" type="submit" onClick={handleSubmit}>
                 Upload
             </Button>
+            </div>
         </Form>
     );
 
     return (
         <>
-            <Button variant="primary" onClick={() => handleShow()}>
+            <Button variant="outlined" onClick={() => handleShow()}>
                 New upload
             </Button>
 

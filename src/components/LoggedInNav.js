@@ -13,6 +13,7 @@ const LoggedInNav = () => {
     const handleLogout = () => {
         signOut(auth).then(() => {
             sessionStorage.removeItem('Auth Token');
+            localStorage.clear();
             navigate("/");
         }).catch((error) => {
             // An error happened.

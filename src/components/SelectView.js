@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { database } from '../firebase';
 import { onValue, ref } from "firebase/database";
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
-import Form from 'react-bootstrap/Form';
-
-const SelectView = ({ userId, updateGroupId, setImages }) => {
+const SelectView = ({ userId, groupId, updateGroupId, setImages }) => {
 
     if (userId === "") {
         return <></>
@@ -32,18 +31,24 @@ const SelectView = ({ userId, updateGroupId, setImages }) => {
     function renderOption(name) {
         const saved = localStorage.getItem("groupId");
         if (name === saved) {
-            return <option selected value={name}>{name}</option>
+            return <MenuItem selected value={name}>{name}</MenuItem>
         }
-        return <option value={name}>{name}</option>
+        return <MenuItem value={name}>{name}</MenuItem>
     }
 
     return (
-        <Form>
-            <Form.Select aria-label="group-tag" onChange={updateGroup}>
-                <option>Select group</option>
+        <FormControl fullWidth>
+            <InputLabel id="select-group-label-id">Subject name</InputLabel>
+            <Select
+                labelId="select-group-label-id"
+                id="select-group"
+                value={groupId}
+                label="Subject Name"
+                onChange={updateGroup}
+            >
                 {groups.map(name => renderOption(name))}
-            </Form.Select>
-        </Form>
+            </Select>
+        </FormControl>
     )
 }
 

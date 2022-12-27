@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
+import Button from '@mui/material/Button';
+import NotesIcon from '@mui/icons-material/Notes';
 
 const CompileView = ({ groupId, images }) => {
 
@@ -15,11 +17,11 @@ const CompileView = ({ groupId, images }) => {
 
     return (
         <>
-            <Button variant="primary" onClick={() => handleShow()}>
+            <Button endIcon={<NotesIcon />} onClick={handleShow}>
                 Compiled notes
             </Button>
 
-            <Modal className="notes-modal" show={show} onHide={handleClose}>
+        <Modal className="notes-modal" show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>{groupId}</Modal.Title>
                 </Modal.Header>
@@ -27,7 +29,6 @@ const CompileView = ({ groupId, images }) => {
                 {images.map((img) => (
                     <p>{img["text"]}</p>
                 ))}
-
                 </Modal.Body>
             </Modal>
 

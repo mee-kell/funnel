@@ -18,10 +18,7 @@ const Signup = () => {
 
         await createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-                // Signed in
-                const user = userCredential.user;
-                console.log(user);
-                navigate("/login")
+                navigate("/login");
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -29,8 +26,6 @@ const Signup = () => {
                 console.log(errorCode, errorMessage);
                 setError(true);
             });
-
-
     }
 
     return (
@@ -74,47 +69,6 @@ const Signup = () => {
                     </NavLink>
                 </p>
         </Box>
-        // <Card className="authCard" body>
-        //     <h1> Sign up </h1>
-
-        //     <Form>
-        //         <Form.Group className="mb-3 authRow" controlId="formEmail">
-        //             <Form.Label>Email address</Form.Label>
-        //             <Form.Control
-        //                 type="email"
-        //                 label="Email address"
-        //                 value={email}
-        //                 onChange={(e) => setEmail(e.target.value)}
-        //                 required
-        //                 placeholder="Email address"
-        //             />
-        //         </Form.Group>
-
-        //         <Form.Group className="mb-3 authRow" controlId="formPassword">
-        //             <Form.Label>Password</Form.Label>
-        //             <Form.Control
-        //                 type="password"
-        //                 label="Create password"
-        //                 value={password}
-        //                 onChange={(e) => setPassword(e.target.value)}
-        //                 required
-        //                 placeholder="Password"
-        //             />
-        //         </Form.Group>
-        //         <Button className="authRow" variant="primary" type="submit" onClick={onSubmit}>
-        //             Sign up
-        //         </Button>
-        //         <br />
-
-        //         <Form.Text className="authRow" muted>
-        //             Already have an account?{' '}
-        //             <NavLink to="/login" >
-        //                 Log in
-        //             </NavLink>
-        //         </Form.Text>
-        //     </Form>
-
-        // </Card>
     )
 }
 

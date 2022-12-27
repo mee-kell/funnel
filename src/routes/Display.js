@@ -56,8 +56,7 @@ function Display() {
 
             {loading === false &&
                 <>
-                    <SelectView userId={userId} updateGroupId={updateGroupId} setImages={setImages} />
-                    <br />
+                    <SelectView userId={userId} groupId={groupId} updateGroupId={updateGroupId} setImages={setImages} />
                     <ImagesView userId={userId} groupId={groupId} images={images} setImages={setImages}/>
                 </>
             }

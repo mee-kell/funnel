@@ -1,32 +1,46 @@
 import React, { useState } from 'react';
 import { auth } from '../firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithPopup, signInWithEmailAndPassword, GoogleAuthProvider } from 'firebase/auth';
 import { NavLink, useNavigate } from 'react-router-dom'
 
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { Box } from '@mui/material';
+import { Alert, Box } from '@mui/material';
+import GoogleIcon from '@mui/icons-material/Google';
 
 const Login = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState(false);
 
     const onLogin = (e) => {
         e.preventDefault();
         signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                // Signed in
-                const user = userCredential.user;
-                navigate("/")
-                console.log(user);
+            .then(() => {
+                navigate("/");
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                console.log(errorCode, errorMessage)
+                console.log(errorCode, errorMessage);
+                setError(true);
             });
+    }
 
+    const provider = new GoogleAuthProvider();
+
+    const onGoogleLogin = (e) => {
+        e.preventDefault();
+        signInWithPopup(auth, provider)
+            .then(() => {
+                navigate("/");
+            }).catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode, errorMessage);
+                setError(true);
+            });
     }
 
     return (
@@ -50,6 +64,8 @@ const Login = () => {
                     fullWidth
                     onChange={(e) => setPassword(e.target.value)}
                 />
+
+                <Box sx={{width: '100%', display: 'flex', justifyContent: 'space-between'}}>
                 <Button 
                     className="authRow" 
                     variant="contained" 
@@ -57,7 +73,20 @@ const Login = () => {
                     onClick={onLogin}>
                     Login
                 </Button>
-                <br />
+                <Button
+                    className="authRow end-align" 
+                    variant="outlined" 
+                    type="submit" 
+                    endIcon={<GoogleIcon />}
+                    onClick={onGoogleLogin}>
+                    Log in with Google
+                </Button>
+                </Box>
+                                
+                {error &&
+                    <Alert severity="error">Invalid email and/or password.</Alert>
+                }
+
                 <p className="authRow" muted>
                     No account yet? {' '}
                     <NavLink to="/signup">

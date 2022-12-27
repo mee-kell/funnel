@@ -97,9 +97,8 @@ const ImagesView = ({ userId, groupId, images, setImages }) => {
 
     return (
         <>
-            <Row>
-                <Col><CompileView groupId={groupId} images={images} /></Col>
-                <Col></Col>
+            <Row className="padding-above">
+                <CompileView groupId={groupId} images={images} />
             </Row>
             <br />
             <Row xs={1} md={2} className="g-4">
